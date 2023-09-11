@@ -113,6 +113,9 @@ const Home: FC = () => {
 
   return (
       <>
+        <div className="absolute top-0 left-0 p-2 text-xs text-gray-400">
+          Coding By <a href="https://github.com/smitug01" className="text-blue-500">@smitug01</a>
+        </div>
         <EditDialog
             isOpen={isDialogOpen}
             onClose={handleDialogClose}
