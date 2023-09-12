@@ -134,23 +134,23 @@ const Home: FC = () => {
             </div>
             <br />
             {currentExam && (
-                <div className="text-4xl">
+                <div className="text-6xl">
                   還剩 {calculateRemainingTime(currentExam.endTime)} 分鐘
                 </div>
             )}
           </div>
           <div className="flex justify-between items-end mt-4">
             <span>
-              <h2 className="text-2xl mb-2">今天的考程表</h2>
+              <h2 className="text-4xl mb-2">今天的考程表</h2>
               <ul>
                 {examSchedule.map((exam) => (
-                    <li className="text-4xl" key={exam.id}>
+                    <li className="text-6xl" key={exam.id}>
                       {exam.startTime} - {exam.endTime} {exam.subject}
                     </li>
                 ))}
               </ul>
             </span>
-            <div className="text-4xl">
+            <div className="text-6xl">
               應到人數: {attendance.total} <br />
               實到人數: {attendance.present} <br />
               缺席座號: {attendance.absentSeatNumbers}
