@@ -114,7 +114,7 @@ const Home: FC = () => {
   return (
       <>
         <div className="absolute top-0 left-0 p-2 text-xs text-gray-400 font-bold">
-          Coding By <a href="https://github.com/smitug01" className="text-blue-500">@smitug01</a>
+          Coding By <a href="https://github.com/smitug01" className="text-blue-500">@smitug01</a> / Dark Mode and Dialog By <a href="https://github.com/kevin0216" className="text-blue-500">@kevin0216</a>
         </div>
         <EditDialog
             isOpen={isDialogOpen}
@@ -122,7 +122,7 @@ const Home: FC = () => {
             onSave={handleDialogSave}
             initialData={currentEditingData}
         />
-        <div className="p-4 bg-white min-h-screen flex flex-col">
+        <div className="p-4 bg-white dark:bg-slate-900 min-h-screen flex flex-col">
           <div className="flex flex-grow justify-center items-center flex-col">
             {currentExam && (
                 <div className="text-5xl mb-2 font-black">
@@ -158,7 +158,7 @@ const Home: FC = () => {
           </div>
           <div className="flex justify-between items-end mt-8">
             <button
-                className="bg-blue-500 text-white px-6 py-3 rounded text-2xl font-medium"
+                className="bg-blue-500 text-white px-6 py-3 rounded text-2xl font-medium hover:bg-blue-600 active:scale-95"
                 onClick={() => handleEditClick()}
             >
               編輯考程與人數
