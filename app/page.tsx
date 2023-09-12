@@ -113,7 +113,7 @@ const Home: FC = () => {
 
   return (
       <>
-        <div className="absolute top-0 left-0 p-2 text-xs text-gray-400">
+        <div className="absolute top-0 left-0 p-2 text-xs text-gray-400 font-bold">
           Coding By <a href="https://github.com/smitug01" className="text-blue-500">@smitug01</a>
         </div>
         <EditDialog
@@ -125,16 +125,16 @@ const Home: FC = () => {
         <div className="p-4 bg-white min-h-screen flex flex-col">
           <div className="flex flex-grow justify-center items-center flex-col">
             {currentExam && (
-                <div className="text-5xl mb-2">
+                <div className="text-5xl mb-2 font-black">
                   {currentExam.subject}
                 </div>
             )}
-            <div className="text-9xl mb-2">
+            <div className="text-9xl mb-2 font-black">
               {currentTime.toLocaleTimeString('en-US', { hour12: false })}
             </div>
             <br />
             {currentExam && (
-                <div className="text-6xl">
+                <div className="text-6xl font-black">
                   還剩 {calculateRemainingTime(currentExam.endTime)} 分鐘
                 </div>
             )}
@@ -144,13 +144,13 @@ const Home: FC = () => {
               <h2 className="text-4xl mb-2">今天的考程表</h2>
               <ul>
                 {examSchedule.map((exam) => (
-                    <li className="text-6xl" key={exam.id}>
+                    <li className="text-6xl font-medium" key={exam.id}>
                       {exam.startTime} - {exam.endTime} {exam.subject}
                     </li>
                 ))}
               </ul>
             </span>
-            <div className="text-6xl">
+            <div className="text-6xl font-medium">
               應到人數: {attendance.total} <br />
               實到人數: {attendance.present} <br />
               缺席座號: {attendance.absentSeatNumbers}
@@ -158,7 +158,7 @@ const Home: FC = () => {
           </div>
           <div className="flex justify-between items-end mt-8">
             <button
-                className="bg-blue-500 text-white px-6 py-3 rounded text-2xl"
+                className="bg-blue-500 text-white px-6 py-3 rounded text-2xl font-medium"
                 onClick={() => handleEditClick()}
             >
               編輯考程與人數
