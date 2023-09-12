@@ -139,28 +139,30 @@ const Home: FC = () => {
                 </div>
             )}
           </div>
-          <div className="mt-4">
-            <h2 className="text-2xl mb-2">今天的考程表</h2>
-            <ul>
-              {examSchedule.map((exam) => (
-                  <li className="text-4xl" key={exam.id}>
-                    {exam.startTime} - {exam.endTime} {exam.subject}
-                  </li>
-              ))}
-            </ul>
-          </div>
           <div className="flex justify-between items-end mt-4">
+            <span>
+              <h2 className="text-2xl mb-2">今天的考程表</h2>
+              <ul>
+                {examSchedule.map((exam) => (
+                    <li className="text-4xl" key={exam.id}>
+                      {exam.startTime} - {exam.endTime} {exam.subject}
+                    </li>
+                ))}
+              </ul>
+            </span>
+            <div className="text-4xl">
+              應到人數: {attendance.total} <br />
+              實到人數: {attendance.present} <br />
+              缺席座號: {attendance.absentSeatNumbers}
+            </div>
+          </div>
+          <div className="flex justify-between items-end mt-8">
             <button
                 className="bg-blue-500 text-white px-6 py-3 rounded text-2xl"
                 onClick={() => handleEditClick()}
             >
               編輯考程與人數
             </button>
-            <div className="text-4xl">
-              應到人數: {attendance.total} <br />
-              實到人數: {attendance.present} <br />
-              缺席座號: {attendance.absentSeatNumbers}
-            </div>
           </div>
         </div>
       </>
