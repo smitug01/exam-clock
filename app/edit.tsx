@@ -6,7 +6,7 @@ import React, {
     useEffect,
     ChangeEvent,
 } from "react";
-import { Transition } from "@headlessui/react";
+import { Transition, Switch } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faSave,
@@ -15,22 +15,13 @@ import {
     faPlusCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { EditingData } from "../lib/interfaces"
+
 interface EditDialogProps {
     isOpen: boolean;
     onClose: (event: MouseEvent<HTMLButtonElement>) => void;
     onSave: (data: EditingData) => void;
     initialData?: EditingData;
-}
-
-interface EditingData {
-    subjects: string[];
-    startTimes: string[];
-    endTimes: string[];
-    attendanceData: {
-        expectedAttendance: number;
-        actualAttendance: number;
-        absentSeatNumbers: string;
-    };
 }
 
 const EditDialog: FC<EditDialogProps> = ({
@@ -49,6 +40,7 @@ const EditDialog: FC<EditDialogProps> = ({
                 actualAttendance: 0,
                 absentSeatNumbers: "",
             },
+            showSchedule: true
         },
     );
 
@@ -63,6 +55,7 @@ const EditDialog: FC<EditDialogProps> = ({
                     actualAttendance: 0,
                     absentSeatNumbers: "",
                 },
+                showSchedule: true
             },
         );
     }, [initialData]);
@@ -106,6 +99,12 @@ const EditDialog: FC<EditDialogProps> = ({
     const handleAbsentSeatNumbersChange = (value: string) => {
         const newData = { ...data };
         newData.attendanceData.absentSeatNumbers = value;
+        setData(newData);
+    };
+
+    const handleShowScheduleChange = () => {
+        const newData = { ...data };
+        newData.showSchedule = !(data.showSchedule);
         setData(newData);
     };
 
@@ -293,7 +292,13 @@ const EditDialog: FC<EditDialogProps> = ({
                                         <FontAwesomeIcon icon={faSave} className={"mr-2"} />
                                         儲存
                                     </div>
-                                </button>                      
+                                </button>    
+                                <Switch
+                                    checked={data.showSchedule}
+                                    onChange={handleShowScheduleChange}
+                                    className={`${data.showSchedule ? 'bg-teal-900' : 'bg-teal-700'}
+                                    relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                                />               
                             </div>
                         </div>
                     </Transition.Child>

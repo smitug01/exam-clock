@@ -2,30 +2,7 @@
 
 import { useState, useEffect, FC } from 'react';
 import EditDialog from './edit';
-
-interface Exam {
-  id: number;
-  subject: string;
-  startTime: string;
-  endTime: string;
-}
-
-interface Attendance {
-  present: number;
-  total: number;
-  absentSeatNumbers?: string;
-}
-
-interface EditingData {
-  subjects: string[];
-  startTimes: string[];
-  endTimes: string[];
-  attendanceData: {
-    expectedAttendance: number;
-    actualAttendance: number;
-    absentSeatNumbers: string;
-  };
-}
+import { Exam, Attendance, EditingData } from '../lib/interfaces'
 
 const Home: FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -39,6 +16,7 @@ const Home: FC = () => {
   ]);
   const [currentExam, setCurrentExam] = useState<Exam | null>(null);
   const [attendance, setAttendance] = useState<Attendance>({ present: 36, total: 36 });
+  const [showSchedule, setShowSchedule] = useState<boolean>(true);
 
   const formatEditingData = (): EditingData => {
     return {
@@ -50,8 +28,10 @@ const Home: FC = () => {
         actualAttendance: attendance.present,
         absentSeatNumbers: attendance.absentSeatNumbers || "",
       },
+      showSchedule: showSchedule
     };
   };
+
 
   const handleEditClick = () => {
     setCurrentEditingData(formatEditingData());
@@ -72,6 +52,8 @@ const Home: FC = () => {
       present: data.attendanceData.actualAttendance,
       absentSeatNumbers: data.attendanceData.absentSeatNumbers,
     });
+
+    setShowSchedule(data.showSchedule)
 
     setIsDialogOpen(false);
   };
