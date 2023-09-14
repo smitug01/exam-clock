@@ -68,10 +68,6 @@ const Home: FC = () => {
       })),
     );
 
-    const handleImportClick = () => {
-      importExam();
-    };
-
     setAttendance({
       ...attendance,
       total: data.attendanceData.expectedAttendance,
