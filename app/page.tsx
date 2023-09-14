@@ -9,6 +9,10 @@ import {
   calculateRemainingTime
 } from "@/lib/utils";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCodeBranch
+} from "@fortawesome/free-solid-svg-icons"
+
 const Home: FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [currentEditingData, setCurrentEditingData] = useState<
@@ -121,22 +125,25 @@ const Home: FC = () => {
 
   return (
     <>
-      <div className="absolute top-0 left-0 p-2 text-xs text-gray-400 font-bold">
-        Maintain By{" "}
-        <a href="https://github.com/smitug01" className="text-blue-500">
-          @smitug01
-        </a>{" "}
-        &{" "}
-        <a href="https://github.com/kevin0216" className="text-blue-500">
-          @kevin0216
-        </a>
-        &nbsp;|&nbsp;
-        <a
-          href="https://github.com/smitug01/exam-clock/releases/tag/v0.2.1"
-          className="text-blue-500"
-        >
-          Version 0.2.1
-        </a>
+      <div className="absolute flex w-full top-0 left-0 p-2 text-xs text-gray-400 font-bold">
+          Maintain By{" "}
+          <a href="https://github.com/smitug01" className="text-blue-500">
+            &nbsp;@smitug01&nbsp;
+          </a>{" "}
+          &{" "}
+          <a href="https://github.com/kevin0216" className="text-blue-500">
+          &nbsp;@kevin0216
+          </a>
+          <a
+            href="https://github.com/smitug01/exam-clock/releases/tag/v0.2.1"
+            className="ml-auto text-end text-gray-300"
+          >
+            <FontAwesomeIcon
+              icon={faCodeBranch}
+              className={"mr-1"}
+            />
+            v0.2u2 (0.2.2dev)
+          </a>
       </div>
       <EditDialog
         isOpen={isDialogOpen}
@@ -169,9 +176,11 @@ const Home: FC = () => {
               <h2 className="text-4xl mb-2">今天的考程表</h2>
               <ul>
                 {examSchedule.map((exam) => (
-                  <li className="text-6xl font-medium" key={exam.id}>
-                    {exam.startTime} - {exam.endTime} {exam.subject}
-                  </li>
+                    <li className={`text-6xl ${
+                      parseInt(exam.endTime.split(":")[0]) < currentTime.getHours() ? "opacity-30 text-thin" : exam.id == currentExam?.id ? "font-bold text-yellow-100" : "font-normal"
+                    }`} key={exam.id}>
+                      {exam.startTime} - {exam.endTime} {exam.subject}
+                    </li>
                 ))}
               </ul>
             </span>

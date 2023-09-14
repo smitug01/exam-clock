@@ -13,9 +13,10 @@ import {
   faXmark,
   faTrashCan,
   faPlusCircle,
+  faRotateRight
 } from "@fortawesome/free-solid-svg-icons";
 
-import { EditingData } from "@/lib/interfaces";
+import { EditingData, ImportExamData } from "@/lib/interfaces";
 
 interface EditDialogProps {
   isOpen: boolean;
@@ -106,6 +107,27 @@ const EditDialog: FC<EditDialogProps> = ({
     setData(newData);
   };
 
+  const restoreDefaultExam = () => {
+    const newData = { ...data };
+    newData.subjects = [];
+    newData.startTimes = [];
+    newData.endTimes = [];
+
+    fetch("/api/import?exam=1")
+    .then((response) => response.json())
+    .then((data) => {
+      data.map((exam: ImportExamData, index: number) => {
+        newData.subjects.push(exam.subject);
+        newData.startTimes.push(exam.startTime);
+        newData.endTimes.push(exam.endTime);
+      })
+      setData(newData)
+    })
+    .catch((error) => {
+      console.error("Error importing exam data:", error);
+    });
+  }
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <div className="fixed inset-0 z-20 overflow-y-auto font-medium">
@@ -150,6 +172,17 @@ const EditDialog: FC<EditDialogProps> = ({
                       id="modal-title"
                     >
                       編輯考程
+                      <button
+                        type="button"
+                        className="inline-flex justify-center rounded-md border border-gray-300 dark:border-slate-600 shadow-sm px-3 py-1.5 bg-green-700 dark:bg-green-600 text-base font-medium text-white hover:bg-green-800 hover:dark:bg-green-700 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm active:scale-95"
+                        onClick={() => {restoreDefaultExam()}}
+                      >
+                        <FontAwesomeIcon
+                          icon={faRotateRight}
+                          className={"my-auto mr-2"}
+                        />
+                        恢復預設值
+                      </button>       
                     </h3>
                     <div className="mt-2">
                       {data.subjects.map((subject, index) => (
