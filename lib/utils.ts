@@ -12,6 +12,13 @@ export const loadExamScheduleFromLocalStorage = () => {
 export const calculateRemainingTime = (endTime: string) => {
     const now = new Date();
     const end = new Date(now.toDateString() + " " + endTime);
-    const remainingMinutes = Math.floor((end.getTime() - now.getTime()) / 60000);
+    const remainingMinutes = Math.floor((end.getMinutes() - now.getMinutes()));
     return remainingMinutes >= 0 ? remainingMinutes : 0;
+};
+
+export const calculateRemainingTimeSecond = (endTime: string) => {
+    const now = new Date();
+    const end = new Date(now.toDateString() + " " + endTime);
+    const remainingSeconds = Math.floor((end.getSeconds() - now.getSeconds()));
+    return remainingSeconds >= 0 ? remainingSeconds : 0;
 };

@@ -22,3 +22,10 @@ export interface EditingData {
   };
   showSchedule: boolean;
 }
+
+export interface ImportExamData {
+  id: number;
+  subject: string;
+  startTime: string;
+  endTime: string;
+}
