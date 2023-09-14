@@ -42,6 +42,17 @@ const Home: FC = () => {
     };
   };
 
+  const importExam = () => {
+    fetch("/api/import?exam=1")
+        .then((response) => response.json())
+        .then((data) => {
+          setExamSchedule(data);
+        })
+        .catch((error) => {
+          console.error("Error importing exam data:", error);
+        });
+  };
+
   const handleEditClick = () => {
     setCurrentEditingData(formatEditingData());
     setIsDialogOpen(true);
@@ -56,6 +67,10 @@ const Home: FC = () => {
         endTime: data.endTimes[index],
       })),
     );
+
+    const handleImportClick = () => {
+      importExam();
+    };
 
     setAttendance({
       ...attendance,
@@ -111,11 +126,11 @@ const Home: FC = () => {
   return (
     <>
       <div className="absolute top-0 left-0 p-2 text-xs text-gray-400 font-bold">
-        Coding By{" "}
+        Maintain By{" "}
         <a href="https://github.com/smitug01" className="text-blue-500">
           @smitug01
         </a>{" "}
-        / Dark Mode and Dialog By{" "}
+        &{" "}
         <a href="https://github.com/kevin0216" className="text-blue-500">
           @kevin0216
         </a>
@@ -175,12 +190,18 @@ const Home: FC = () => {
             )}
           </div>
         </div>
-        <div className="flex justify-between items-end mt-8">
+        <div className="flex items-end mt-8">
           <button
             className="bg-blue-500 text-white px-6 py-3 rounded text-2xl font-medium hover:bg-blue-600 active:scale-95"
             onClick={() => handleEditClick()}
           >
             編輯考程與人數
+          </button>
+          <button
+              className="ml-8 bg-green-500 text-white px-6 py-3 rounded text-2xl font-medium hover:bg-green-600 active:scale-95"
+              onClick={() => importExam()}
+          >
+            導入考程與人數
           </button>
         </div>
       </div>

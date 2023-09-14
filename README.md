@@ -57,7 +57,7 @@
 
 ## 作者
 
-- 編寫和維護：[@smitug01](https://github.com/smitug01)
+- 編寫和維護：[@smitug01](https://github.com/smitug01), [@kevin0216](https://github.com/kevin0216)
 
 ## 授權
 
