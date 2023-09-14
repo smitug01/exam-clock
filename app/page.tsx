@@ -121,7 +121,7 @@ const Home: FC = () => {
         </a>
         &nbsp;|&nbsp;
         <a
-          href="https://github.com/smitug01/exam-clock"
+          href="https://github.com/smitug01/exam-clock/releases/tag/v0.2.1"
           className="text-blue-500"
         >
           Version 0.2.1
