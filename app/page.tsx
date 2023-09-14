@@ -3,6 +3,11 @@
 import { useState, useEffect, FC } from "react";
 import EditDialog from "@/components/editDialog";
 import { Exam, Attendance, EditingData } from "@/lib/interfaces";
+import {
+  saveExamScheduleToLocalStorage,
+  loadExamScheduleFromLocalStorage,
+  calculateRemainingTime
+} from "@/lib/utils";
 
 const Home: FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -69,6 +74,17 @@ const Home: FC = () => {
   };
 
   useEffect(() => {
+    const savedSchedule = loadExamScheduleFromLocalStorage();
+    if (savedSchedule.length > 0) {
+      setExamSchedule(savedSchedule);
+    }
+  }, []);
+
+  useEffect(() => {
+    saveExamScheduleToLocalStorage(examSchedule);
+  }, [examSchedule]);
+
+  useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
@@ -91,15 +107,6 @@ const Home: FC = () => {
 
     setCurrentExam(current ?? null);
   }, [currentTime, examSchedule]);
-
-  const calculateRemainingTime = (endTime: string): number => {
-    const now = new Date();
-    const end = new Date(now.toDateString() + " " + endTime);
-    const remainingMinutes = Math.floor(
-      (end.getTime() - now.getTime()) / 60000,
-    );
-    return remainingMinutes >= 0 ? remainingMinutes : 0;
-  };
 
   return (
     <>
