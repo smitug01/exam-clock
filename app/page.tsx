@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, FC } from "react";
-import EditDialog from "./edit";
-import { Exam, Attendance, EditingData } from "../lib/interfaces";
+import EditDialog from "@/components/editDialog";
+import { Exam, Attendance, EditingData } from "@/lib/interfaces";
 
 const Home: FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -44,7 +44,7 @@ const Home: FC = () => {
 
   const handleDialogSave = (data: EditingData) => {
     setExamSchedule((prev) =>
-      data.subjects.map((subject, index) => ({
+      data.subjects.map((_subject, index) => ({
         ...prev[index],
         subject: data.subjects[index],
         startTime: data.startTimes[index],

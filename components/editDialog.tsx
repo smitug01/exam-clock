@@ -15,7 +15,7 @@ import {
   faPlusCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { EditingData } from "../lib/interfaces";
+import { EditingData } from "@/lib/interfaces";
 
 interface EditDialogProps {
   isOpen: boolean;
@@ -279,7 +279,7 @@ const EditDialog: FC<EditDialogProps> = ({
               <div className="bg-gray-50 dark:bg-slate-600 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
                   type="button"
-                  className="font-semibold w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-500 hover:dark:bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 active:scale-95 sm:ml-3 sm:w-auto sm:text-sm"
+                  className=" w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-500 hover:dark:bg-indigo-600 text-base font-medium text-white active:scale-95 sm:ml-3 sm:w-auto sm:text-sm"
                   onClick={handleSaveClick}
                 >
                   <div className="my-auto">
@@ -305,11 +305,11 @@ const EditDialog: FC<EditDialogProps> = ({
                     className={`${
                       data.showSchedule ? "translate-x-9" : "translate-x-0"
                     }
-                                            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full ${
-                                              data.showSchedule
-                                                ? "bg-white"
-                                                : "bg-slate-700 dark:bg-white"
-                                            } shadow-lg ring-0 transition duration-200 ease-in-out`}
+                    pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full ${
+                      data.showSchedule
+                        ? "bg-white"
+                        : "bg-slate-700 dark:bg-white"
+                    } shadow-lg ring-0 transition duration-200 ease-in-out`}
                   />
                 </Switch>
               </div>
