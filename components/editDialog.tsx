@@ -254,7 +254,7 @@ const EditDialog: FC<EditDialogProps> = ({
                           />
                           <button
                             type="button"
-                            className="w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-slate-600 shadow-sm px-3 py-1.5 bg-red-500 dark:bg-red-400 text-base font-medium text-white hover:light:bg-red-600 hover:dark:bg-red-500 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm active:scale-95"
+                            className="w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-slate-600 shadow-sm px-3 py-1.5 bg-red-500 dark:bg-red-400 text-base font-medium text-white hover:bg-red-600 hover:dark:bg-red-500 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm active:scale-95"
                             onClick={() => {
                               const newData = { ...data };
                               newData.subjects.splice(index, 1);
@@ -294,7 +294,7 @@ const EditDialog: FC<EditDialogProps> = ({
                       </h4>
                       <div className="flex space-x-4 mt-2">
                         <div>
-                          <h4 className="text-normal font-normal">應到人數</h4>
+                          <h4 className="text-normal font-normal text-gray-900 dark:text-white">應到人數</h4>
                           <input
                             type="number"
                             value={data.attendanceData.expectedAttendance}
@@ -303,12 +303,12 @@ const EditDialog: FC<EditDialogProps> = ({
                                 parseInt(e.target.value, 10),
                               );
                             }}
-                            className="block w-32 mt-1 px-3 py-2 rounded-md bg-gray-100 border light:border-gray-300 dark:border-slate-600 dark:bg-slate-600 dark:placeholder-white dark:text-white placeholder-gray-500 text-gray-900 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="block w-32 mt-1 px-3 py-2 rounded-md bg-gray-100 border border-gray-300 dark:border-slate-600 dark:bg-slate-600 dark:placeholder-white text-gray-900 dark:text-white placeholder-gray-500 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             placeholder="應到人數"
                           />
                         </div>
                         <div>
-                          <h4 className="text-normal font-normal">實到人數</h4>
+                          <h4 className="text-normal font-normal text-gray-900 dark:text-white">實到人數</h4>
                           <input
                             type="number"
                             value={data.attendanceData.actualAttendance}
@@ -317,19 +317,19 @@ const EditDialog: FC<EditDialogProps> = ({
                                 parseInt(e.target.value, 10),
                               );
                             }}
-                            className="block w-32 mt-1 px-3 py-2 rounded-md bg-gray-100 border light:border-gray-300 dark:border-slate-600 dark:bg-slate-600 dark:placeholder-white dark:text-white placeholder-gray-500 text-gray-900 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="block w-32 mt-1 px-3 py-2 rounded-md bg-gray-100 border border-gray-300 dark:border-slate-600 dark:bg-slate-600 dark:placeholder-white text-gray-900 dark:text-white placeholder-gray-500 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             placeholder="實到人數"
                           />
                         </div>
                         <div>
-                          <h4 className="text-normal font-normal">缺席座號</h4>
+                          <h4 className="text-normal font-normal text-gray-900 dark:text-white">缺席座號</h4>
                           <input
                             type="text"
                             value={data.attendanceData.absentSeatNumbers}
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                               handleAbsentSeatNumbersChange(e.target.value);
                             }}
-                            className="block flex-grow mt-1 px-3 py-2 rounded-md bg-gray-100 border light:border-gray-300 dark:border-slate-600 dark:bg-slate-600 dark:placeholder-white dark:text-white placeholder-gray-500 text-gray-900 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className="block flex-grow mt-1 px-3 py-2 rounded-md bg-gray-100 border border-gray-300 dark:border-slate-600 dark:bg-slate-600 dark:placeholder-white dark:text-white placeholder-gray-500 text-gray-900 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             placeholder="請輸入缺席座號..."
                           />
                         </div>
@@ -339,7 +339,7 @@ const EditDialog: FC<EditDialogProps> = ({
                   <div className="content-end items-end ml-auto">
                     <button
                       type="button"
-                      className="w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-slate-600 shadow-sm px-2.5 py-1.5 bg-red-500 dark:bg-red-400 text-base font-medium text-white hover:light:bg-red-600 hover:dark:bg-red-500 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm active:scale-90"
+                      className="w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-slate-600 shadow-sm px-2.5 py-1.5 bg-red-500 dark:bg-red-400 text-base font-medium text-white hover:bg-red-600 hover:dark:bg-red-500 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm active:scale-90"
                       onClick={onClose}
                     >
                       <FontAwesomeIcon icon={faXmark} className={"text-3xl"} />
@@ -358,7 +358,7 @@ const EditDialog: FC<EditDialogProps> = ({
                     儲存
                   </div>
                 </button>
-                <span className="my-auto ml-2 pr-3 border-r-2 border-r-black dark:border-r-gray-400">
+                <span className="my-auto ml-2 pr-3 border-r-2 border-r-black dark:text-white text-gray-900 dark:border-r-gray-400">
                   考試過程中顯示考程表
                 </span>
                 <Switch

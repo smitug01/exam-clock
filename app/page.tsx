@@ -77,7 +77,7 @@ const Home: FC = () => {
     return (
       examSchedule.map((exam) => (
       <li className={`my-1 flex text-6xl align-middle ${
-        isTimePassed(exam.endTime) == "Just Passed" ? "opacity-20 font-thin" : isTimePassed(exam.endTime) == "Passed" ? "hidden" : currentExam && exam.id === currentExam.id ? "text-yellow-100" : "font-normal"
+        isTimePassed(exam.endTime) == "Just Passed" ? "opacity-20 font-thin" : isTimePassed(exam.endTime) == "Passed" ? "hidden" : currentExam && exam.id === currentExam.id ? "text-orange-600 dark:text-yellow-100" : "font-normal"
       }`} key={exam.id}>
         <FontAwesomeIcon 
           icon={isTimePassed(exam.endTime) == "Just Passed" ? faCircleRegular : currentExam && exam.id === currentExam.id ? faCircleChevronRight : faCircle}
@@ -87,6 +87,19 @@ const Home: FC = () => {
       </li>
     ))
     )
+  }
+
+  function getScheduleCount () {
+    const now = currentTime.getMinutes() + currentTime.getHours() * 60
+    let total = examSchedule.length
+    examSchedule.map((exam) => {
+      const examTime = parseInt(exam.endTime.split(":")[1]) + parseInt(exam.endTime.split(":")[0]) * 60
+      if (now > examTime || (now === examTime && currentTime.getSeconds() > 0)) {
+        total--;
+      }
+    })
+
+    return total
   }
 
   function isTimePassed (examTime: string) {
@@ -205,7 +218,7 @@ const Home: FC = () => {
 
   return (
     <>
-      <div className="transition-colors absolute flex w-full top-0 left-0 p-2 text-xs text-gray-400 font-bold">
+      <div className="transition-colors absolute flex w-full top-0 left-0 p-2 text-xs text-gray-400 dark:text-gray-300 font-bold">
           Maintain By{" "}
           <a href="https://github.com/smitug01" className="text-blue-400 hover:text-blue-500">
             &nbsp;@smitug01&nbsp;
@@ -223,7 +236,7 @@ const Home: FC = () => {
             目前正在全螢幕模式下，按 F11, Esc 或右方按鈕來離開
           </a>) : (<></>)}
           <button
-            className="ml-auto text-end text-gray-300 hover:text-gray-400 active:text-gray-500"
+            className="ml-auto text-end text-gray-400 hover:text-gray-600 dark:text-gray-300 active:text-gray-500"
             onClick={() => handleFullScreen()}
           >
             <FontAwesomeIcon
@@ -233,18 +246,18 @@ const Home: FC = () => {
             {screenfull.isFullscreen ? "離開全螢幕" : "啟動全螢幕"}
           </button>
           <button
-            className="ml-3 text-end text-gray-300 hover:text-gray-400 active:text-gray-500"
+            className="ml-3 text-end text-gray-400 hover:text-gray-600 hover:dark:text-gray-400 dark:text-gray-300 active:text-gray-500"
             onClick={() => handlePrefferedThemeChange()}
           >
             <FontAwesomeIcon
               icon={ !localStorage.getItem('theme') ? faDisplay : localStorage.getItem('theme') === 'dark' ? faSun : faMoon  }
               className={"mr-1"}
             />
-            {!localStorage.getItem('theme') ? "系統" : localStorage.getItem('theme') === 'dark' ? "暗色" : "亮色"}
+            {!localStorage.getItem('theme') ? `系統 (${document.documentElement.classList.contains("dark") ? "暗色" : "亮色"})` : localStorage.getItem('theme') === 'dark' ? "暗色" : "亮色"}
           </button>
           <a
             href={`https://github.com/smitug01/exam-clock/releases/tag/v${version}`}
-            className="ml-3 text-end text-gray-300"
+            className="ml-3 text-end text-gray-400 hover:text-gray-600 hover:dark:text-gray-400 dark:text-gray-300 active:text-gray-500"
           >
             <FontAwesomeIcon
               icon={ faCodeBranch }
@@ -285,7 +298,7 @@ const Home: FC = () => {
           {!showSchedule && currentExam ? (
             <></>
           ) : (
-            <span className={`${examSchedule.length > 3 ? document.documentElement.classList.contains('dark') ? "txt txt-overflow-dark" : "txt txt-overflow" : ""} max-h-68 hover:max-h-none`}>
+            <span className={`${getScheduleCount() > 3 ? document.documentElement.classList.contains('dark') ? "txt txt-overflow-dark" : "txt txt-overflow" : ""} max-h-64 hover:max-h-88`}>
               <h2 className="text-4xl mb-2">今天的考程表</h2>
               <ul>
                 {getSchedule()}
