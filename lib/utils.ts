@@ -14,7 +14,7 @@ export const calculateRemainingTime = (endTime: string) => {
     const end = new Date(now.toDateString() + " " + endTime);
     const remainingMinutes = Math.floor((end.getTime() - now.getTime()) / (60 * 1000));
 
-    if (remainingMinutes < 10) {
+    if (remainingMinutes < 10 && remainingMinutes > 0) {
         const remainingSeconds = Math.floor((end.getTime() - now.getTime()) / 1000) % 60;
         return `${remainingMinutes >= 0 ? remainingMinutes : 0} 分鐘 ${remainingSeconds >= 0 ? remainingSeconds : 0} 秒`;
     } else if (remainingMinutes == 0) {
