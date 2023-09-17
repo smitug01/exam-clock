@@ -10,11 +10,25 @@ import {
 } from "@/lib/utils";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCodeBranch
+import { 
+  faCodeBranch,
+  faSun,
+  faMoon,
+  faDisplay
 } from "@fortawesome/free-solid-svg-icons"
 import ImportDialog from "@components/importDialog";
 
 const Home: FC = () => {
+  function setTheme() {
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }
+  
+  setTheme()
+
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const [isImportDialogOpen, setIsImportDialogOpen] = useState<boolean>(false);
   const [currentEditingData, setCurrentEditingData] = useState<
@@ -91,6 +105,23 @@ const Home: FC = () => {
     setIsImportDialogOpen(false);
   };
 
+  const handlePrefferedThemeChange = () => {
+    if (!localStorage.getItem('theme')) {
+      localStorage.setItem('theme', 'light')
+    } else {
+      switch (localStorage.getItem('theme')) {
+        case 'light':
+          localStorage.setItem('theme', 'dark')
+          break
+        
+        case 'dark':
+          localStorage.removeItem('theme')
+          break    
+      }
+    }
+    setTheme()
+  }
+
   useEffect(() => {
     const savedSchedule = loadExamScheduleFromLocalStorage();
     if (savedSchedule.length > 0) {
@@ -128,7 +159,7 @@ const Home: FC = () => {
 
   return (
     <>
-      <div className="absolute flex w-full top-0 left-0 p-2 text-xs text-gray-400 font-bold">
+      <div className="transition-colors absolute flex w-full top-0 left-0 p-2 text-xs text-gray-400 font-bold">
           Maintain By{" "}
           <a href="https://github.com/smitug01" className="text-blue-500">
             &nbsp;@smitug01&nbsp;
@@ -137,15 +168,25 @@ const Home: FC = () => {
           <a href="https://github.com/kevin0216" className="text-blue-500">
           &nbsp;@kevin0216
           </a>
-          <a
-            href="https://github.com/smitug01/exam-clock/releases/tag/v0.2.1"
-            className="ml-auto text-end text-gray-300"
+          <button
+            className="ml-auto text-end text-gray-300 hover:text-gray-400 active:text-gray-500"
+            onClick={() => handlePrefferedThemeChange()}
           >
             <FontAwesomeIcon
-              icon={faCodeBranch}
+              icon={ !localStorage.getItem('theme') ? faDisplay : localStorage.getItem('theme') === 'dark' ? faSun : faMoon  }
               className={"mr-1"}
             />
-            v0.2u2 (0.2.2dev)
+            {!localStorage.getItem('theme') ? "系統" : localStorage.getItem('theme') === 'dark' ? "暗色" : "亮色"}
+          </button>
+          <a
+            href="https://github.com/smitug01/exam-clock/releases/tag/v0.2.1"
+            className="ml-3 text-end text-gray-300"
+          >
+            <FontAwesomeIcon
+              icon={ faCodeBranch }
+              className={"mr-1"}
+            />
+            v0.2u2 (0.2.2)
           </a>
       </div>
       <EditDialog
@@ -159,24 +200,24 @@ const Home: FC = () => {
           onClose={handleImportDialogClose}
           onImportData={handleImportData}
       />
-      <div className="p-4 bg-white dark:bg-slate-900 min-h-screen flex flex-col">
+      <div className="transition-colors p-4 bg-white dark:bg-slate-900 min-h-screen flex flex-col">
         <div className="flex flex-grow justify-center items-center flex-col">
           {currentExam && (
-            <div className="text-5xl mb-2 font-black">
+            <div className="text-5xl mb-2 font-black text-black dark:text-white">
               {currentExam.subject}
             </div>
           )}
-          <div className="text-9xl mb-2 font-black">
+          <div className="text-9xl mb-2 font-black text-black dark:text-white">
             {currentTime.toLocaleTimeString("en-US", { hour12: false })}
           </div>
           <br />
           {currentExam && (
-            <div className="text-6xl font-black">
-              還剩 {calculateRemainingTime(currentExam.endTime)}
+            <div className="text-6xl font-black text-black dark:text-white">
+              還剩 {calculateRemainingTime(currentExam.endTime)} 分鐘
             </div>
           )}
         </div>
-        <div className="flex justify-between items-end mt-4">
+        <div className="flex justify-between items-end mt-4 text-black dark:text-white">
           {!showSchedule && currentExam ? (
             <></>
           ) : (
@@ -193,7 +234,7 @@ const Home: FC = () => {
               </ul>
             </span>
           )}
-          <div className="text-4xl font-medium ml-auto content-end text-end">
+          <div className="transition-colors text-4xl font-medium ml-auto content-end text-end">
             應到人數: {attendance.total} <br />
             實到人數: {attendance.present} <br />
             {attendance.absentSeatNumbers ? (
