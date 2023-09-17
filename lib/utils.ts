@@ -1,12 +1,12 @@
 import { Exam } from "@lib/interfaces";
 
 export const saveExamScheduleToLocalStorage = (schedule: Exam[]) => {
-    localStorage.setItem('examSchedule', JSON.stringify(schedule));
+  localStorage.setItem("examSchedule", JSON.stringify(schedule));
 };
 
 export const loadExamScheduleFromLocalStorage = () => {
-    const schedule = localStorage.getItem('examSchedule');
-    return schedule ? JSON.parse(schedule) : [];
+  const schedule = localStorage.getItem("examSchedule");
+  return schedule ? JSON.parse(schedule) : [];
 };
 
 export const calculateRemainingTime = (endTime: string) => {

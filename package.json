@@ -17,6 +17,7 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
+    "ci": "^2.3.0",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
     "headlessui": "^0.0.0",
@@ -28,6 +29,7 @@
     "typescript": "5.2.2"
   },
   "devDependencies": {
-    "@cloudflare/next-on-pages": "^1.6.0"
+    "@cloudflare/next-on-pages": "^1.6.0",
+    "prettier": "^3.0.3"
   }
 }

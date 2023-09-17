@@ -6,7 +6,7 @@ import { Exam, Attendance, EditingData } from "@/lib/interfaces";
 import {
   saveExamScheduleToLocalStorage,
   loadExamScheduleFromLocalStorage,
-  calculateRemainingTime
+  calculateRemainingTime,
 } from "@/lib/utils";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
