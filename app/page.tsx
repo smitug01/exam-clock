@@ -98,6 +98,7 @@ const Home: FC = () => {
       return "Not Passed"
     }
   }
+  
   const handleEditClick = () => {
     setCurrentEditingData(formatEditingData());
     setIsEditDialogOpen(true);
