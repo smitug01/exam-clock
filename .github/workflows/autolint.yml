@@ -35,6 +35,6 @@ jobs:
         with:
           auto_fix: true
           eslint: true
-          eslint_autofix: true
+          eslint_auto_fix: true
           prettier: true
-          prettier_autofix: true
+          prettier_auto_fix: true
