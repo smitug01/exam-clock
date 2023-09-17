@@ -8,6 +8,7 @@ import {
   loadExamScheduleFromLocalStorage,
   calculateRemainingTime,
 } from "@/lib/utils";
+import screenfull from "screenfull";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { 
@@ -16,7 +17,9 @@ import {
   faMoon,
   faDisplay,
   faCircle,
-  faCircleChevronRight
+  faCircleChevronRight,
+  faExpand,
+  faCompress
 } from "@fortawesome/free-solid-svg-icons"
 import { 
   faCircle as faCircleRegular
@@ -159,6 +162,12 @@ const Home: FC = () => {
     setTheme()
   }
 
+  const handleFullScreen = () => {
+    if (screenfull.isEnabled) {
+      screenfull.toggle()
+    }
+  }
+
   useEffect(() => {
     const savedSchedule = loadExamScheduleFromLocalStorage();
     if (savedSchedule.length > 0) {
@@ -205,8 +214,26 @@ const Home: FC = () => {
           <a href="https://github.com/kevin0216" className="text-blue-400 hover:text-blue-500">
           &nbsp;@kevin0216
           </a>
+          {screenfull.isFullscreen ? (
+          <a className="ml-2 px-1 rounded bg-orange-500 dark:bg-orange-600 text-white">
+            <FontAwesomeIcon
+              icon={ faExpand  }
+              className={"mr-1"}
+            />
+            目前正在全螢幕模式下，按 F11, Esc 或右方按鈕來離開
+          </a>) : (<></>)}
           <button
             className="ml-auto text-end text-gray-300 hover:text-gray-400 active:text-gray-500"
+            onClick={() => handleFullScreen()}
+          >
+            <FontAwesomeIcon
+              icon={ screenfull.isFullscreen ? faCompress : faExpand  }
+              className={"mr-1"}
+            />
+            {screenfull.isFullscreen ? "離開全螢幕" : "啟動全螢幕"}
+          </button>
+          <button
+            className="ml-3 text-end text-gray-300 hover:text-gray-400 active:text-gray-500"
             onClick={() => handlePrefferedThemeChange()}
           >
             <FontAwesomeIcon
