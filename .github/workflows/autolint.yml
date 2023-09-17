@@ -38,3 +38,4 @@ jobs:
           eslint_auto_fix: true
           prettier: true
           prettier_auto_fix: true
+          prettier_args: '--write "**/*.{css,js,json,jsx,ts,tsx}"'
