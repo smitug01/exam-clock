@@ -116,7 +116,7 @@ const EditDialog: FC<EditDialogProps> = ({
     fetch("/api/import?exam=1")
     .then((response) => response.json())
     .then((data) => {
-      data.map((exam: ImportExamData, index: number) => {
+      data.map((exam: ImportExamData) => {
         newData.subjects.push(exam.subject);
         newData.startTimes.push(exam.startTime);
         newData.endTimes.push(exam.endTime);
@@ -219,9 +219,9 @@ const EditDialog: FC<EditDialogProps> = ({
                             className="w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-slate-600 shadow-sm px-3 py-1.5 bg-red-500 dark:bg-red-400 text-base font-medium text-white hover:light:bg-red-600 hover:dark:bg-red-500 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm active:scale-95"
                             onClick={() => {
                               const newData = { ...data };
-                              newData.subjects.splice(index, 1); // 删除科目
-                              newData.startTimes.splice(index, 1); // 删除对应的开始时间
-                              newData.endTimes.splice(index, 1); // 删除对应的结束时间
+                              newData.subjects.splice(index, 1);
+                              newData.startTimes.splice(index, 1);
+                              newData.endTimes.splice(index, 1);
                               setData(newData);
                             }}
                           >

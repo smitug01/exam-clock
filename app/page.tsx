@@ -2,7 +2,7 @@
 
 import { useState, useEffect, FC } from "react";
 import EditDialog from "@/components/editDialog";
-import { Exam, Attendance, EditingData } from "@/lib/interfaces";
+import { Exam, Attendance, EditingData, ImportExamData } from "@/lib/interfaces";
 import {
   saveExamScheduleToLocalStorage,
   loadExamScheduleFromLocalStorage,
@@ -12,9 +12,11 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCodeBranch
 } from "@fortawesome/free-solid-svg-icons"
+import ImportDialog from "@components/importDialog";
 
 const Home: FC = () => {
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
+  const [isImportDialogOpen, setIsImportDialogOpen] = useState<boolean>(false);
   const [currentEditingData, setCurrentEditingData] = useState<
     EditingData | undefined
   >(undefined);
@@ -45,22 +47,15 @@ const Home: FC = () => {
       showSchedule: showSchedule,
     };
   };
-
-  const importExam = () => {
-    fetch("/api/import?exam=1")
-        .then((response) => response.json())
-        .then((data) => {
-          setExamSchedule(data);
-        })
-        .catch((error) => {
-          console.error("Error importing exam data:", error);
-        });
-  };
-
+  
   const handleEditClick = () => {
     setCurrentEditingData(formatEditingData());
-    setIsDialogOpen(true);
+    setIsEditDialogOpen(true);
   };
+  
+  const handleImportClick = () => {
+    setIsImportDialogOpen(true);
+  }
 
   const handleDialogSave = (data: EditingData) => {
     setExamSchedule((prev) =>
@@ -80,12 +75,20 @@ const Home: FC = () => {
     });
 
     setShowSchedule(data.showSchedule);
-
-    setIsDialogOpen(false);
+    setIsEditDialogOpen(false);
   };
 
-  const handleDialogClose = () => {
-    setIsDialogOpen(false);
+  const handleEditDialogClose = () => {
+    setIsEditDialogOpen(false);
+  };
+  
+  const handleImportDialogClose = () => {
+    setIsImportDialogOpen(false);
+  }
+
+  const handleImportData = (data: ImportExamData[]) => {
+    setExamSchedule(data);
+    setIsImportDialogOpen(false);
   };
 
   useEffect(() => {
@@ -146,10 +149,15 @@ const Home: FC = () => {
           </a>
       </div>
       <EditDialog
-        isOpen={isDialogOpen}
-        onClose={handleDialogClose}
+        isOpen={isEditDialogOpen}
+        onClose={handleEditDialogClose}
         onSave={handleDialogSave}
         initialData={currentEditingData}
+      />
+      <ImportDialog
+          isOpen={isImportDialogOpen}
+          onClose={handleImportDialogClose}
+          onImportData={handleImportData}
       />
       <div className="p-4 bg-white dark:bg-slate-900 min-h-screen flex flex-col">
         <div className="flex flex-grow justify-center items-center flex-col">
@@ -164,7 +172,7 @@ const Home: FC = () => {
           <br />
           {currentExam && (
             <div className="text-6xl font-black">
-              還剩 {calculateRemainingTime(currentExam.endTime)} 分鐘
+              還剩 {calculateRemainingTime(currentExam.endTime)}
             </div>
           )}
         </div>
@@ -204,7 +212,7 @@ const Home: FC = () => {
           </button>
           <button
               className="ml-8 bg-green-500 text-white px-6 py-3 rounded text-2xl font-medium hover:bg-green-600 active:scale-95"
-              onClick={() => importExam()}
+              onClick={() => handleImportClick()}
           >
             導入考程與人數
           </button>

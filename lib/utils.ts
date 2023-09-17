@@ -13,12 +13,11 @@ export const calculateRemainingTime = (endTime: string) => {
     const now = new Date();
     const end = new Date(now.toDateString() + " " + endTime);
     const remainingMinutes = Math.floor((end.getTime() - now.getTime()) / (60 * 1000));
-    return remainingMinutes >= 0 ? remainingMinutes : 0;
-};
 
-export const calculateRemainingTimeSecond = (endTime: string) => {
-    const now = new Date();
-    const end = new Date(now.toDateString() + " " + endTime);
-    const remainingSeconds = Math.floor((end.getSeconds() - now.getSeconds()));
-    return remainingSeconds >= 0 ? remainingSeconds : 0;
+    if (remainingMinutes < 10) {
+        const remainingSeconds = Math.floor((end.getTime() - now.getTime()) / 1000) % 60;
+        return `${remainingMinutes >= 0 ? remainingMinutes : 0} 分鐘 ${remainingSeconds >= 0 ? remainingSeconds : 0} 秒`;
+    }
+
+    return `${remainingMinutes >= 0 ? remainingMinutes : 0} 分鐘`;
 };
