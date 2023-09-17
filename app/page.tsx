@@ -285,7 +285,7 @@ const Home: FC = () => {
           {!showSchedule && currentExam ? (
             <></>
           ) : (
-            <span className={`${examSchedule.length > 3 ? document.documentElement.classList.contains('dark') ? "txt txt-overflow-dark" : "txt txt-overflow" : ""} max-h-68 hover:max-h-none`}>
+            <span className={`${examSchedule.length > 3 ? document.documentElement.classList.contains('dark') ? "txt txt-overflow-dark" : "txt txt-overflow" : ""} max-h-72 hover:max-h-none`}>
               <h2 className="text-4xl mb-2">今天的考程表</h2>
               <ul>
                 {getSchedule()}
