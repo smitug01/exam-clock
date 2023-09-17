@@ -10,11 +10,33 @@ import {
 } from "@/lib/utils";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faCodeBranch
+import { 
+  faCodeBranch,
+  faSun,
+  faMoon,
+  faDisplay,
+  faCircle,
+  faCircleChevronRight
 } from "@fortawesome/free-solid-svg-icons"
+import { 
+  faCircle as faCircleRegular
+} from "@fortawesome/free-regular-svg-icons"
 import ImportDialog from "@components/importDialog";
 
 const Home: FC = () => {
+  const version = "0.2.2";
+  const versionString = `v${version.slice(0, 3)}${version.slice(3) == "0" ? "" : `u${version.slice(4)}`}`
+
+  function setTheme() {
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }
+  
+  setTheme()
+
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const [isImportDialogOpen, setIsImportDialogOpen] = useState<boolean>(false);
   const [currentEditingData, setCurrentEditingData] = useState<
@@ -47,6 +69,35 @@ const Home: FC = () => {
       showSchedule: showSchedule,
     };
   };
+
+  function getSchedule () {
+    return (
+      examSchedule.map((exam) => (
+      <li className={`my-1 flex text-6xl align-middle ${
+        isTimePassed(exam.endTime) == "Just Passed" ? "opacity-20 font-thin" : isTimePassed(exam.endTime) == "Passed" ? "hidden" : currentExam && exam.id === currentExam.id ? "text-yellow-100" : "font-normal"
+      }`} key={exam.id}>
+        <FontAwesomeIcon 
+          icon={isTimePassed(exam.endTime) == "Just Passed" ? faCircleRegular : currentExam && exam.id === currentExam.id ? faCircleChevronRight : faCircle}
+          className={"pt-2 my-auto text-3xl mr-4"}
+        />
+        {exam.startTime} - {exam.endTime} {exam.subject}
+      </li>
+    ))
+    )
+  }
+
+  function isTimePassed (examTime: string) {
+    const now = currentTime.getMinutes() + currentTime.getHours() * 60
+    const exam = parseInt(examTime.split(":")[1]) + parseInt(examTime.split(":")[0]) * 60
+
+    if (now > exam || (now === exam && currentTime.getSeconds() > 5)) { 
+      return "Passed"
+    } else if (now === exam && currentTime.getSeconds() <= 5) {
+      return "Just Passed"
+    } else {
+      return "Not Passed"
+    }
+  }
   
   const handleEditClick = () => {
     setCurrentEditingData(formatEditingData());
@@ -91,6 +142,23 @@ const Home: FC = () => {
     setIsImportDialogOpen(false);
   };
 
+  const handlePrefferedThemeChange = () => {
+    if (!localStorage.getItem('theme')) {
+      localStorage.setItem('theme', 'light')
+    } else {
+      switch (localStorage.getItem('theme')) {
+        case 'light':
+          localStorage.setItem('theme', 'dark')
+          break
+        
+        case 'dark':
+          localStorage.removeItem('theme')
+          break    
+      }
+    }
+    setTheme()
+  }
+
   useEffect(() => {
     const savedSchedule = loadExamScheduleFromLocalStorage();
     if (savedSchedule.length > 0) {
@@ -128,24 +196,34 @@ const Home: FC = () => {
 
   return (
     <>
-      <div className="absolute flex w-full top-0 left-0 p-2 text-xs text-gray-400 font-bold">
+      <div className="transition-colors absolute flex w-full top-0 left-0 p-2 text-xs text-gray-400 font-bold">
           Maintain By{" "}
-          <a href="https://github.com/smitug01" className="text-blue-500">
+          <a href="https://github.com/smitug01" className="text-blue-400 hover:text-blue-500">
             &nbsp;@smitug01&nbsp;
           </a>{" "}
           &{" "}
-          <a href="https://github.com/kevin0216" className="text-blue-500">
+          <a href="https://github.com/kevin0216" className="text-blue-400 hover:text-blue-500">
           &nbsp;@kevin0216
           </a>
-          <a
-            href="https://github.com/smitug01/exam-clock/releases/tag/v0.2.1"
-            className="ml-auto text-end text-gray-300"
+          <button
+            className="ml-auto text-end text-gray-300 hover:text-gray-400 active:text-gray-500"
+            onClick={() => handlePrefferedThemeChange()}
           >
             <FontAwesomeIcon
-              icon={faCodeBranch}
+              icon={ !localStorage.getItem('theme') ? faDisplay : localStorage.getItem('theme') === 'dark' ? faSun : faMoon  }
               className={"mr-1"}
             />
-            v0.2u2 (0.2.2dev)
+            {!localStorage.getItem('theme') ? "系統" : localStorage.getItem('theme') === 'dark' ? "暗色" : "亮色"}
+          </button>
+          <a
+            href={`https://github.com/smitug01/exam-clock/releases/tag/v${version}`}
+            className="ml-3 text-end text-gray-300"
+          >
+            <FontAwesomeIcon
+              icon={ faCodeBranch }
+              className={"mr-1"}
+            />
+            {versionString} ({version})
           </a>
       </div>
       <EditDialog
@@ -159,41 +237,35 @@ const Home: FC = () => {
           onClose={handleImportDialogClose}
           onImportData={handleImportData}
       />
-      <div className="p-4 bg-white dark:bg-slate-900 min-h-screen flex flex-col">
+      <div className="transition-colors p-4 bg-white dark:bg-slate-900 min-h-screen flex flex-col">
         <div className="flex flex-grow justify-center items-center flex-col">
           {currentExam && (
-            <div className="text-5xl mb-2 font-black">
+            <div className="text-5xl mb-2 font-black text-black dark:text-white">
               {currentExam.subject}
             </div>
           )}
-          <div className="text-9xl mb-2 font-black">
+          <div className="text-9xl mb-2 font-black text-black dark:text-white">
             {currentTime.toLocaleTimeString("en-US", { hour12: false })}
           </div>
           <br />
           {currentExam && (
-            <div className="text-6xl font-black">
+            <div className="text-6xl font-black text-black dark:text-white">
               還剩 {calculateRemainingTime(currentExam.endTime)}
             </div>
           )}
         </div>
-        <div className="flex justify-between items-end mt-4">
+        <div className="flex justify-between relative items-end mt-4 text-black dark:text-white">
           {!showSchedule && currentExam ? (
             <></>
           ) : (
-            <span>
+            <span className={`${examSchedule.length > 3 ? document.documentElement.classList.contains('dark') ? "txt txt-overflow-dark" : "txt txt-overflow" : ""} max-h-68 hover:max-h-none`}>
               <h2 className="text-4xl mb-2">今天的考程表</h2>
               <ul>
-                {examSchedule.map((exam) => (
-                    <li className={`text-6xl ${
-                      parseInt(exam.endTime.split(":")[0]) < currentTime.getHours() ? "opacity-30 text-thin" : exam.id == currentExam?.id ? "font-bold text-yellow-100" : "font-normal"
-                    }`} key={exam.id}>
-                      {exam.startTime} - {exam.endTime} {exam.subject}
-                    </li>
-                ))}
+                {getSchedule()}
               </ul>
             </span>
           )}
-          <div className="text-4xl font-medium ml-auto content-end text-end">
+          <div className="transition-colors text-4xl font-medium ml-auto content-end text-end">
             應到人數: {attendance.total} <br />
             實到人數: {attendance.present} <br />
             {attendance.absentSeatNumbers ? (

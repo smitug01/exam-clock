@@ -13,7 +13,8 @@ import {
   faXmark,
   faTrashCan,
   faPlusCircle,
-  faRotateRight
+  faRotateRight,
+  faWarning
 } from "@fortawesome/free-solid-svg-icons";
 
 import { EditingData, ImportExamData } from "@/lib/interfaces";
@@ -60,6 +61,8 @@ const EditDialog: FC<EditDialogProps> = ({
       },
     );
   }, [initialData]);
+
+  const [currentTime, setCurrentTime] = useState<Date>(new Date());
 
   const handleSaveClick = () => {
     onSave(data);
@@ -128,6 +131,32 @@ const EditDialog: FC<EditDialogProps> = ({
     });
   }
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  function isTimePassed (examTime: string) {
+    const now = currentTime.getMinutes() + currentTime.getHours() * 60
+    const exam = parseInt(examTime.split(":")[1]) + parseInt(examTime.split(":")[0]) * 60
+
+    return now > exam;
+  }
+
+  function timeValidation (examTimeArray: Array<string>) {
+    const now = currentTime.getMinutes() + currentTime.getHours() * 60
+    for (const examTime of examTimeArray) {
+      const exam = parseInt(examTime.split(":")[1]) + parseInt(examTime.split(":")[0]) * 60
+      if (now > exam) {
+        return true;
+      }
+    };
+    return false;
+  }
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <div className="fixed inset-0 z-20 overflow-y-auto font-medium">
@@ -182,9 +211,18 @@ const EditDialog: FC<EditDialogProps> = ({
                           className={"my-auto mr-2"}
                         />
                         恢復預設值
-                      </button>       
+                      </button> 
                     </h3>
                     <div className="mt-2">
+                    {timeValidation(data.endTimes) ? (
+                        <div className="text-base font-bold text-orange-500 dark:text-orange-300">
+                          <FontAwesomeIcon
+                            icon={faWarning}
+                            className={"my-auto mr-2"}
+                          />
+                          注意: 有考試項目已經結束 (黃框)
+                        </div>
+                      ) : (<></>)}  
                       {data.subjects.map((subject, index) => (
                         <div key={index} className="flex space-x-4 mt-2">
                           <input
@@ -193,7 +231,7 @@ const EditDialog: FC<EditDialogProps> = ({
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                               handleSubjectChange(index, e.target.value);
                             }}
-                            className="block flex-grow px-3 py-2 rounded-md bg-gray-100 border light:border-gray-300 dark:border-slate-600 dark:bg-slate-600 dark:placeholder-white dark:text-white placeholder-gray-500 text-gray-900 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className={`block flex-grow px-3 py-2 rounded-md bg-gray-100 ${isTimePassed(data.endTimes[index]) ? "border-4 border-orange-300 dark-orange-500" : "border border-gray-300 dark:border-slate-600"} dark:bg-slate-600 dark:placeholder-white dark:text-white placeholder-gray-500 text-gray-900 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                             placeholder="請輸入科目..."
                           />
                           <input
@@ -202,7 +240,7 @@ const EditDialog: FC<EditDialogProps> = ({
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                               handleStartTimeChange(index, e.target.value);
                             }}
-                            className="block w-32 px-3 py-2 rounded-md bg-gray-100 border light:border-gray-300 dark:border-slate-600 dark:bg-slate-600 dark:placeholder-white dark:text-white placeholder-gray-500 text-gray-900 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className={`block w-32 px-3 py-2 rounded-md bg-gray-100 ${isTimePassed(data.endTimes[index]) ? "border-4 border-orange-300 dark-orange-500" : "border border-gray-300 dark:border-slate-600"} dark:bg-slate-600 dark:placeholder-white dark:text-white placeholder-gray-500 text-gray-900 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                             placeholder="請輸入開始時間... (24小時制)"
                           />
                           <input
@@ -211,7 +249,7 @@ const EditDialog: FC<EditDialogProps> = ({
                             onChange={(e: ChangeEvent<HTMLInputElement>) => {
                               handleEndTimeChange(index, e.target.value);
                             }}
-                            className="block w-32 px-3 py-2 rounded-md bg-gray-100 border light:border-gray-300 dark:border-slate-600 dark:bg-slate-600 dark:placeholder-white dark:text-white placeholder-gray-500 text-gray-900 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            className={`block w-32 px-3 py-2 rounded-md bg-gray-100 ${isTimePassed(data.endTimes[index]) ? "border-4 border-orange-300 dark-orange-500" : "border border-gray-300 dark:border-slate-600"} dark:bg-slate-600 dark:placeholder-white dark:text-white placeholder-gray-500 text-gray-900 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
                             placeholder="請輸入結束時間... (24小時制)"
                           />
                           <button

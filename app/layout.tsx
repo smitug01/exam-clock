@@ -19,6 +19,28 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-TW">
+      <style>{`
+        /* width */
+        ::-webkit-scrollbar {
+          width: 2px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+          opacity: 0;
+        }
+        
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          opacity: 0; 
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          opacity: 0; 
+        }
+      `}
+      </style>
       <body className={inter.className}>{children}</body>
     </html>
   );
