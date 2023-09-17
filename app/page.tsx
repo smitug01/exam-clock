@@ -27,7 +27,7 @@ import {
 import ImportDialog from "@components/importDialog";
 
 const Home: FC = () => {
-  const version = "0.2.2";
+  const version = "0.3.0";
   const versionString = `v${version.slice(0, 3)}${version.slice(3) == "0" ? "" : `u${version.slice(4)}`}`
 
   function setTheme() {
