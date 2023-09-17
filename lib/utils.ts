@@ -12,7 +12,7 @@ export const loadExamScheduleFromLocalStorage = () => {
 export const calculateRemainingTime = (endTime: string) => {
     const now = new Date();
     const end = new Date(now.toDateString() + " " + endTime);
-    const remainingMinutes = Math.floor((end.getMinutes() - now.getMinutes()));
+    const remainingMinutes = Math.floor((end.getTime() - now.getTime()) / (60 * 1000));
     return remainingMinutes >= 0 ? remainingMinutes : 0;
 };
 
