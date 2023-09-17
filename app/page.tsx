@@ -28,7 +28,7 @@ import ImportDialog from "@components/importDialog";
 
 const Home: FC = () => {
   const version = "0.3.0";
-  const versionString = `v${version.slice(0, 3)}${version.slice(4) == "0" ? "" : `u${version.slice(4)}`}`
+  const versionString = `Version ${version.slice(0, 3)}${version.slice(4) == "0" ? "" : ` Update ${version.slice(4)}`}`
 
   function setTheme() {
     if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
