@@ -6,7 +6,7 @@ import { Exam, Attendance, EditingData } from "@/lib/interfaces";
 import {
   saveExamScheduleToLocalStorage,
   loadExamScheduleFromLocalStorage,
-  calculateRemainingTime
+  calculateRemainingTime,
 } from "@/lib/utils";
 
 const Home: FC = () => {
