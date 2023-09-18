@@ -19,7 +19,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-TW">
-      <style>{`
+      <style>
+        {`
         /* width */
         ::-webkit-scrollbar {
           width: 2px;

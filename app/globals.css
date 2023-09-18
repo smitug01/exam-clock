@@ -27,21 +27,21 @@ body {
 }
 
 .txt {
-  	overflow-y: auto;
+  overflow-y: auto;
 }
 
 .txt-overflow {
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
-  content: '';
+  content: "";
 }
 
 .txt-overflow-dark {
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
-  content: '';
+  content: "";
 }
 
 .txt-overflow:after {
@@ -52,7 +52,7 @@ body {
   right: 0;
   height: 35px;
   background: linear-gradient(transparent, white);
-  content: '';
+  content: "";
 }
 
 .txt-overflow-dark:after {
@@ -63,5 +63,5 @@ body {
   right: 0;
   height: 35px;
   background: linear-gradient(transparent, rgb(15 23 42));
-  content: '';
+  content: "";
 }

@@ -2,7 +2,12 @@
 
 import { useState, useEffect, FC } from "react";
 import EditDialog from "@/components/editDialog";
-import { Exam, Attendance, EditingData, ImportExamData } from "@/lib/interfaces";
+import {
+  Exam,
+  Attendance,
+  EditingData,
+  ImportExamData,
+} from "@/lib/interfaces";
 import {
   saveExamScheduleToLocalStorage,
   loadExamScheduleFromLocalStorage,
@@ -10,8 +15,8 @@ import {
 } from "@/lib/utils";
 import screenfull from "screenfull";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
   faCodeBranch,
   faSun,
   faMoon,
@@ -19,26 +24,30 @@ import {
   faCircle,
   faCircleChevronRight,
   faExpand,
-  faCompress
-} from "@fortawesome/free-solid-svg-icons"
-import { 
-  faCircle as faCircleRegular
-} from "@fortawesome/free-regular-svg-icons"
+  faCompress,
+} from "@fortawesome/free-solid-svg-icons";
+import { faCircle as faCircleRegular } from "@fortawesome/free-regular-svg-icons";
 import ImportDialog from "@components/importDialog";
 
 const Home: FC = () => {
   const version = "0.3.0";
-  const versionString = `Version ${version.slice(0, 3)}${version.slice(4) == "0" ? "" : ` Update ${version.slice(4)}`}`
+  const versionString = `Version ${version.slice(0, 3)}${
+    version.slice(4) == "0" ? "" : ` Update ${version.slice(4)}`
+  }`;
 
   function setTheme() {
-    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark')
+    if (
+      localStorage.getItem("theme") === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark')
+      document.documentElement.classList.remove("dark");
     }
   }
-  
-  setTheme()
+
+  setTheme();
 
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const [isImportDialogOpen, setIsImportDialogOpen] = useState<boolean>(false);
@@ -73,56 +82,75 @@ const Home: FC = () => {
     };
   };
 
-  function getSchedule () {
-    return (
-      examSchedule.map((exam) => (
-      <li className={`my-1 flex text-6xl align-middle ${
-        isTimePassed(exam.endTime) == "Just Passed" ? "opacity-20 font-thin" : isTimePassed(exam.endTime) == "Passed" ? "hidden" : currentExam && exam.id === currentExam.id ? "text-orange-600 dark:text-yellow-100" : "font-normal"
-      }`} key={exam.id}>
-        <FontAwesomeIcon 
-          icon={isTimePassed(exam.endTime) == "Just Passed" ? faCircleRegular : currentExam && exam.id === currentExam.id ? faCircleChevronRight : faCircle}
+  function getSchedule() {
+    return examSchedule.map((exam) => (
+      <li
+        className={`my-1 flex text-6xl align-middle ${
+          isTimePassed(exam.endTime) == "Just Passed"
+            ? "opacity-20 font-thin"
+            : isTimePassed(exam.endTime) == "Passed"
+            ? "hidden"
+            : currentExam && exam.id === currentExam.id
+            ? "text-orange-600 dark:text-yellow-100"
+            : "font-normal"
+        }`}
+        key={exam.id}
+      >
+        <FontAwesomeIcon
+          icon={
+            isTimePassed(exam.endTime) == "Just Passed"
+              ? faCircleRegular
+              : currentExam && exam.id === currentExam.id
+              ? faCircleChevronRight
+              : faCircle
+          }
           className={"pt-2 my-auto text-3xl mr-4"}
         />
         {exam.startTime} - {exam.endTime} {exam.subject}
       </li>
-    ))
-    )
+    ));
   }
 
-  function getScheduleCount () {
-    const now = currentTime.getMinutes() + currentTime.getHours() * 60
-    let total = examSchedule.length
+  function getScheduleCount() {
+    const now = currentTime.getMinutes() + currentTime.getHours() * 60;
+    let total = examSchedule.length;
     examSchedule.map((exam) => {
-      const examTime = parseInt(exam.endTime.split(":")[1]) + parseInt(exam.endTime.split(":")[0]) * 60
-      if (now > examTime || (now === examTime && currentTime.getSeconds() > 0)) {
+      const examTime =
+        parseInt(exam.endTime.split(":")[1]) +
+        parseInt(exam.endTime.split(":")[0]) * 60;
+      if (
+        now > examTime ||
+        (now === examTime && currentTime.getSeconds() > 0)
+      ) {
         total--;
       }
-    })
+    });
 
-    return total
+    return total;
   }
 
-  function isTimePassed (examTime: string) {
-    const now = currentTime.getMinutes() + currentTime.getHours() * 60
-    const exam = parseInt(examTime.split(":")[1]) + parseInt(examTime.split(":")[0]) * 60
+  function isTimePassed(examTime: string) {
+    const now = currentTime.getMinutes() + currentTime.getHours() * 60;
+    const exam =
+      parseInt(examTime.split(":")[1]) + parseInt(examTime.split(":")[0]) * 60;
 
-    if (now > exam || (now === exam && currentTime.getSeconds() > 5)) { 
-      return "Passed"
+    if (now > exam || (now === exam && currentTime.getSeconds() > 5)) {
+      return "Passed";
     } else if (now === exam && currentTime.getSeconds() <= 5) {
-      return "Just Passed"
+      return "Just Passed";
     } else {
-      return "Not Passed"
+      return "Not Passed";
     }
   }
-  
+
   const handleEditClick = () => {
     setCurrentEditingData(formatEditingData());
     setIsEditDialogOpen(true);
   };
-  
+
   const handleImportClick = () => {
     setIsImportDialogOpen(true);
-  }
+  };
 
   const handleDialogSave = (data: EditingData) => {
     setExamSchedule((prev) =>
@@ -148,10 +176,10 @@ const Home: FC = () => {
   const handleEditDialogClose = () => {
     setIsEditDialogOpen(false);
   };
-  
+
   const handleImportDialogClose = () => {
     setIsImportDialogOpen(false);
-  }
+  };
 
   const handleImportData = (data: ImportExamData[]) => {
     setExamSchedule(data);
@@ -159,27 +187,27 @@ const Home: FC = () => {
   };
 
   const handlePrefferedThemeChange = () => {
-    if (!localStorage.getItem('theme')) {
-      localStorage.setItem('theme', 'light')
+    if (!localStorage.getItem("theme")) {
+      localStorage.setItem("theme", "light");
     } else {
-      switch (localStorage.getItem('theme')) {
-        case 'light':
-          localStorage.setItem('theme', 'dark')
-          break
-        
-        case 'dark':
-          localStorage.removeItem('theme')
-          break    
+      switch (localStorage.getItem("theme")) {
+        case "light":
+          localStorage.setItem("theme", "dark");
+          break;
+
+        case "dark":
+          localStorage.removeItem("theme");
+          break;
       }
     }
-    setTheme()
-  }
+    setTheme();
+  };
 
   const handleFullScreen = () => {
     if (screenfull.isEnabled) {
-      screenfull.toggle()
+      screenfull.toggle();
     }
-  }
+  };
 
   useEffect(() => {
     const savedSchedule = loadExamScheduleFromLocalStorage();
@@ -219,52 +247,69 @@ const Home: FC = () => {
   return (
     <>
       <div className="transition-colors absolute flex w-full top-0 left-0 p-2 text-xs text-gray-400 dark:text-gray-300 font-bold">
-          Maintain By{" "}
-          <a href="https://github.com/smitug01" className="text-blue-400 hover:text-blue-500">
-            &nbsp;@smitug01&nbsp;
-          </a>{" "}
-          &{" "}
-          <a href="https://github.com/kevin0216" className="text-blue-400 hover:text-blue-500">
+        Maintain By{" "}
+        <a
+          href="https://github.com/smitug01"
+          className="text-blue-400 hover:text-blue-500"
+        >
+          &nbsp;@smitug01&nbsp;
+        </a>{" "}
+        &{" "}
+        <a
+          href="https://github.com/kevin0216"
+          className="text-blue-400 hover:text-blue-500"
+        >
           &nbsp;@kevin0216
-          </a>
-          {screenfull.isFullscreen ? (
+        </a>
+        {screenfull.isFullscreen ? (
           <a className="ml-2 px-1 rounded bg-orange-500 dark:bg-orange-600 text-white">
-            <FontAwesomeIcon
-              icon={ faExpand  }
-              className={"mr-1"}
-            />
+            <FontAwesomeIcon icon={faExpand} className={"mr-1"} />
             目前正在全螢幕模式下，按 F11, Esc 或右方按鈕來離開
-          </a>) : (<></>)}
-          <button
-            className="ml-auto text-end text-gray-400 hover:text-gray-600 dark:text-gray-300 active:text-gray-500"
-            onClick={() => handleFullScreen()}
-          >
-            <FontAwesomeIcon
-              icon={ screenfull.isFullscreen ? faCompress : faExpand  }
-              className={"mr-1"}
-            />
-            {screenfull.isFullscreen ? "離開全螢幕" : "啟動全螢幕"}
-          </button>
-          <button
-            className="ml-3 text-end text-gray-400 hover:text-gray-600 hover:dark:text-gray-400 dark:text-gray-300 active:text-gray-500"
-            onClick={() => handlePrefferedThemeChange()}
-          >
-            <FontAwesomeIcon
-              icon={ !localStorage.getItem('theme') ? faDisplay : localStorage.getItem('theme') === 'dark' ? faSun : faMoon  }
-              className={"mr-1"}
-            />
-            {!localStorage.getItem('theme') ? `系統 (${document.documentElement.classList.contains("dark") ? "暗色" : "亮色"})` : localStorage.getItem('theme') === 'dark' ? "暗色" : "亮色"}
-          </button>
-          <a
-            href={`https://github.com/smitug01/exam-clock/releases/tag/v${version}`}
-            className="ml-3 text-end text-gray-400 hover:text-gray-600 hover:dark:text-gray-400 dark:text-gray-300 active:text-gray-500"
-          >
-            <FontAwesomeIcon
-              icon={ faCodeBranch }
-              className={"mr-1"}
-            />
-            {versionString} ({version})
           </a>
+        ) : (
+          <></>
+        )}
+        <button
+          className="ml-auto text-end text-gray-400 hover:text-gray-600 dark:text-gray-300 active:text-gray-500"
+          onClick={() => handleFullScreen()}
+        >
+          <FontAwesomeIcon
+            icon={screenfull.isFullscreen ? faCompress : faExpand}
+            className={"mr-1"}
+          />
+          {screenfull.isFullscreen ? "離開全螢幕" : "啟動全螢幕"}
+        </button>
+        <button
+          className="ml-3 text-end text-gray-400 hover:text-gray-600 hover:dark:text-gray-400 dark:text-gray-300 active:text-gray-500"
+          onClick={() => handlePrefferedThemeChange()}
+        >
+          <FontAwesomeIcon
+            icon={
+              !localStorage.getItem("theme")
+                ? faDisplay
+                : localStorage.getItem("theme") === "dark"
+                ? faSun
+                : faMoon
+            }
+            className={"mr-1"}
+          />
+          {!localStorage.getItem("theme")
+            ? `系統 (${
+                document.documentElement.classList.contains("dark")
+                  ? "暗色"
+                  : "亮色"
+              })`
+            : localStorage.getItem("theme") === "dark"
+            ? "暗色"
+            : "亮色"}
+        </button>
+        <a
+          href={`https://github.com/smitug01/exam-clock/releases/tag/v${version}`}
+          className="ml-3 text-end text-gray-400 hover:text-gray-600 hover:dark:text-gray-400 dark:text-gray-300 active:text-gray-500"
+        >
+          <FontAwesomeIcon icon={faCodeBranch} className={"mr-1"} />
+          {versionString} ({version})
+        </a>
       </div>
       <EditDialog
         isOpen={isEditDialogOpen}
@@ -273,9 +318,9 @@ const Home: FC = () => {
         initialData={currentEditingData}
       />
       <ImportDialog
-          isOpen={isImportDialogOpen}
-          onClose={handleImportDialogClose}
-          onImportData={handleImportData}
+        isOpen={isImportDialogOpen}
+        onClose={handleImportDialogClose}
+        onImportData={handleImportData}
       />
       <div className="transition-colors p-4 bg-white dark:bg-slate-900 min-h-screen flex flex-col">
         <div className="flex flex-grow justify-center items-center flex-col">
@@ -298,11 +343,17 @@ const Home: FC = () => {
           {!showSchedule && currentExam ? (
             <></>
           ) : (
-            <span className={`${getScheduleCount() > 3 ? document.documentElement.classList.contains('dark') ? "txt txt-overflow-dark" : "txt txt-overflow" : ""} max-h-64 hover:max-h-88`}>
+            <span
+              className={`${
+                getScheduleCount() > 3
+                  ? document.documentElement.classList.contains("dark")
+                    ? "txt txt-overflow-dark"
+                    : "txt txt-overflow"
+                  : ""
+              } max-h-64 hover:max-h-88`}
+            >
               <h2 className="text-4xl mb-2">今天的考程表</h2>
-              <ul>
-                {getSchedule()}
-              </ul>
+              <ul>{getSchedule()}</ul>
             </span>
           )}
           <div className="transition-colors text-4xl font-medium ml-auto content-end text-end">
@@ -323,8 +374,8 @@ const Home: FC = () => {
             編輯考程與人數
           </button>
           <button
-              className="ml-8 bg-green-500 text-white px-6 py-3 rounded text-2xl font-medium hover:bg-green-600 active:scale-95"
-              onClick={() => handleImportClick()}
+            className="ml-8 bg-green-500 text-white px-6 py-3 rounded text-2xl font-medium hover:bg-green-600 active:scale-95"
+            onClick={() => handleImportClick()}
           >
             導入考程與人數
           </button>
