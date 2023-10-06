@@ -288,8 +288,8 @@ const Home: FC = () => {
               !localStorage.getItem("theme")
                 ? faDisplay
                 : localStorage.getItem("theme") === "dark"
-                ? faSun
-                : faMoon
+                ? faMoon
+                : faSun
             }
             className={"mr-1"}
           />
