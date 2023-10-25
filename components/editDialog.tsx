@@ -180,7 +180,7 @@ const EditDialog: FC<EditDialogProps> = ({
     return numberGrid.map((number) => (
       <button 
         key={`${number}`}
-        className={`${data.attendanceData.absentSeatNumbers.split(",").indexOf(`${number}`) != -1 ? "text-white bg-red-500 dark:bg-red-600" : "text-black dark:text-white bg-white dark:bg-slate-700"} w-full inline-flex justify-center rounded-md border shadow-sm px-4 py-2 text-base font-medium active:scale-95 sm:ml-3 sm:w-auto sm:text-sm`}
+        className={`${data.attendanceData.absentSeatNumbers.split(",").indexOf(`${number}`) != -1 ? "text-white bg-red-500 dark:bg-red-600" : "text-black dark:text-white bg-white dark:bg-slate-700"} w-full mr-1 mb-1 transition-all inline-flex justify-center rounded-md border dark:border-slate-600 shadow-sm px-4 py-2 text-normal font-semibold active:scale-90 sm:w-auto sm:text-sm`}
         onClick={() => handleAbsentSeatNumbersChange(number, data.attendanceData.absentSeatNumbers.split(",").indexOf(`${number}`))}  
       >
         {number}
@@ -339,10 +339,10 @@ const EditDialog: FC<EditDialogProps> = ({
                       <h4 className="mt-3 text-2xl font-semibold text-gray-900 dark:text-white">
                         出缺席資訊
                       </h4>
-                      <div className="flex flex-col space-x-4 mt-2">
+                      <div className="flex flex-col mt-2">
                         <div className="flex flex-row">
                           <div>
-                            <h4 className="text-normal font-normal text-gray-900 dark:text-white">
+                            <h4 className="text-normal font-semibold text-gray-900 dark:text-white">
                               應到人數
                             </h4>
                             <input
@@ -358,7 +358,7 @@ const EditDialog: FC<EditDialogProps> = ({
                             />
                           </div>
                           <div className="ml-2">
-                            <h4 className="text-normal font-normal text-gray-900 dark:text-white">
+                            <h4 className="text-normal font-semibold text-gray-900 dark:text-white">
                               實到人數
                             </h4>
                             <input
@@ -366,15 +366,20 @@ const EditDialog: FC<EditDialogProps> = ({
                               disabled={true}
                               value={`${data.attendanceData.actualAttendance}${data.attendanceData.actualAttendance != data.attendanceData.expectedAttendance ? ` (缺 ${data.attendanceData.expectedAttendance - data.attendanceData.actualAttendance} 人)` : ``}`}
                               className="block w-32 mt-1 px-3 py-2 rounded-md bg-gray-100 border border-gray-300 dark:border-slate-600 dark:bg-slate-600 dark:placeholder-white text-gray-900 dark:text-white placeholder-gray-500 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                              placeholder="應到人數"
+                              placeholder="實到人數"
                             />
                           </div>
                         </div>
                         <div>
-                            <h4 className="text-normal font-normal text-gray-900 dark:text-white">
+                            <h3 className="mt-2 text-normal font-semibold text-gray-900 dark:text-white">
+                              缺考學生
+                            </h3>
+                            <h4 className="mt-1 text-base font-normal text-gray-900 dark:text-white">
                               請點選未到學生座號來標記缺考
                             </h4>
-                            {getNumberButton(data.attendanceData.expectedAttendance)}
+                            <div className="mt-2 grid grid-cols-10 col-span-10">
+                              {getNumberButton(data.attendanceData.expectedAttendance)}
+                            </div>
                         </div>
                       </div>
                     </div>
