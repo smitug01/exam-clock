@@ -94,7 +94,7 @@ const EditDialog: FC<EditDialogProps> = ({
 
   const handleAbsentSeatNumbersChange = (number: number, isAbsent: number) => {
     const newData = { ...data };
-    var absentSeatNumbers = newData.attendanceData.absentSeatNumbers.split(","); 
+    var absentSeatNumbers = newData.attendanceData.absentSeatNumbers.split(",");
 
     if (isAbsent === -1) {
       absentSeatNumbers.push(number.toString());
@@ -108,7 +108,8 @@ const EditDialog: FC<EditDialogProps> = ({
 
     absentSeatNumbers.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
 
-    newData.attendanceData.actualAttendance = newData.attendanceData.expectedAttendance - absentSeatNumbers.length;
+    newData.attendanceData.actualAttendance =
+      newData.attendanceData.expectedAttendance - absentSeatNumbers.length;
     newData.attendanceData.absentSeatNumbers = absentSeatNumbers.join(",");
     setData(newData);
   };
@@ -173,19 +174,32 @@ const EditDialog: FC<EditDialogProps> = ({
     let numberGrid = [];
     var i: number;
 
-    for (i=0; i<expectedAttendance; i++) {
-      numberGrid.push(i+1)
+    for (i = 0; i < expectedAttendance; i++) {
+      numberGrid.push(i + 1);
     }
 
     return numberGrid.map((number) => (
-      <button 
+      <button
         key={`${number}`}
-        className={`${data.attendanceData.absentSeatNumbers.split(",").indexOf(`${number}`) != -1 ? "text-white bg-red-500 dark:bg-red-600" : "text-black dark:text-white bg-white dark:bg-slate-700"} w-full mr-1 mb-1 transition-all inline-flex justify-center rounded-md border dark:border-slate-600 shadow-sm px-4 py-2 text-normal font-semibold active:scale-90 sm:w-auto sm:text-sm`}
-        onClick={() => handleAbsentSeatNumbersChange(number, data.attendanceData.absentSeatNumbers.split(",").indexOf(`${number}`))}  
+        className={`${
+          data.attendanceData.absentSeatNumbers
+            .split(",")
+            .indexOf(`${number}`) != -1
+            ? "text-white bg-red-500 dark:bg-red-600"
+            : "text-black dark:text-white bg-white dark:bg-slate-700"
+        } w-full mr-1 mb-1 transition-all inline-flex justify-center rounded-md border dark:border-slate-600 shadow-sm px-4 py-2 text-normal font-semibold active:scale-90 sm:w-auto sm:text-sm`}
+        onClick={() =>
+          handleAbsentSeatNumbersChange(
+            number,
+            data.attendanceData.absentSeatNumbers
+              .split(",")
+              .indexOf(`${number}`),
+          )
+        }
       >
         {number}
       </button>
-    ))
+    ));
   }
 
   return (
@@ -364,22 +378,32 @@ const EditDialog: FC<EditDialogProps> = ({
                             <input
                               type="string"
                               disabled={true}
-                              value={`${data.attendanceData.actualAttendance}${data.attendanceData.actualAttendance != data.attendanceData.expectedAttendance ? ` (缺 ${data.attendanceData.expectedAttendance - data.attendanceData.actualAttendance} 人)` : ``}`}
+                              value={`${data.attendanceData.actualAttendance}${
+                                data.attendanceData.actualAttendance !=
+                                data.attendanceData.expectedAttendance
+                                  ? ` (缺 ${
+                                      data.attendanceData.expectedAttendance -
+                                      data.attendanceData.actualAttendance
+                                    } 人)`
+                                  : ``
+                              }`}
                               className="block w-32 mt-1 px-3 py-2 rounded-md bg-gray-100 border border-gray-300 dark:border-slate-600 dark:bg-slate-600 dark:placeholder-white text-gray-900 dark:text-white placeholder-gray-500 focus:dark:border-white focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                               placeholder="實到人數"
                             />
                           </div>
                         </div>
                         <div>
-                            <h3 className="mt-2 text-normal font-semibold text-gray-900 dark:text-white">
-                              缺考學生
-                            </h3>
-                            <h4 className="mt-1 text-base font-normal text-gray-900 dark:text-white">
-                              請點選未到學生座號來標記缺考
-                            </h4>
-                            <div className="mt-2 grid grid-cols-10 col-span-10">
-                              {getNumberButton(data.attendanceData.expectedAttendance)}
-                            </div>
+                          <h3 className="mt-2 text-normal font-semibold text-gray-900 dark:text-white">
+                            缺考學生
+                          </h3>
+                          <h4 className="mt-1 text-base font-normal text-gray-900 dark:text-white">
+                            請點選未到學生座號來標記缺考
+                          </h4>
+                          <div className="mt-2 grid grid-cols-10 col-span-10">
+                            {getNumberButton(
+                              data.attendanceData.expectedAttendance,
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>

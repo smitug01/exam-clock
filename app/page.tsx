@@ -26,11 +26,9 @@ import {
   faExpand,
   faCompress,
   faFileImport,
-  faPenToSquare
+  faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
-import { 
-  faCircle as faCircleRegular,
- } from "@fortawesome/free-regular-svg-icons";
+import { faCircle as faCircleRegular } from "@fortawesome/free-regular-svg-icons";
 import ImportDialog from "@components/importDialog";
 
 const Home: FC = () => {
@@ -269,7 +267,9 @@ const Home: FC = () => {
         {screenfull.isFullscreen ? (
           <a className="ml-2 px-1 rounded bg-orange-500 dark:bg-orange-600 text-white">
             <FontAwesomeIcon icon={faExpand} className={"sm:mr-1"} />
-            <p className="max-sm:hidden">目前正在全螢幕模式下，按 F11, Esc 或右方按鈕來離開</p>
+            <p className="max-sm:hidden">
+              目前正在全螢幕模式下，按 F11, Esc 或右方按鈕來離開
+            </p>
           </a>
         ) : (
           <></>
@@ -349,37 +349,54 @@ const Home: FC = () => {
             <></>
           ) : (
             <>
-            {getScheduleCount() != 0 ? (
-              <span
-                className={`${
-                  getScheduleCount() > 3
-                    ? document.documentElement.classList.contains("dark")
-                      ? "txt txt-overflow-dark"
-                      : "txt txt-overflow"
-                    : ""
-                } max-h-64 hover:max-h-88`}
-              >
-                <h2 className="text-4xl mb-2">今天的考程表</h2>
-                <ul>{getSchedule()}</ul>
-              </span>
-            ) : (
-              <span>
-                <h2 className="text-4xl mb-2">今日已無更多考試項目</h2>
-                <ul className="text-normal opacity-60">點擊<span className="font-bold">「編輯考程及人數」</span>來新增更多考試項目</ul>
-              </span>
-            )
-          }
-          </>
+              {getScheduleCount() != 0 ? (
+                <span
+                  className={`${
+                    getScheduleCount() > 3
+                      ? document.documentElement.classList.contains("dark")
+                        ? "txt txt-overflow-dark"
+                        : "txt txt-overflow"
+                      : ""
+                  } max-h-64 hover:max-h-88`}
+                >
+                  <h2 className="text-4xl mb-2">今天的考程表</h2>
+                  <ul>{getSchedule()}</ul>
+                </span>
+              ) : (
+                <span>
+                  <h2 className="text-4xl mb-2">今日已無更多考試項目</h2>
+                  <ul className="text-normal opacity-60">
+                    點擊<span className="font-bold">「編輯考程及人數」</span>
+                    來新增更多考試項目
+                  </ul>
+                </span>
+              )}
+            </>
           )}
           <div className="transition-colors flex flex-col text-4xl font-medium ml-auto content-end text-end">
             <span className="text-2xl opacity-75">應到人數</span>
-            <span>{attendance.total}<span className="text-2xl"> 人</span></span>
+            <span>
+              {attendance.total}
+              <span className="text-2xl"> 人</span>
+            </span>
             <span className="text-2xl opacity-75 mt-2">實到人數</span>
-            <span>{attendance.present != attendance.total ? <span className="text-2xl text-red-400">(-{attendance.total-attendance.present}) </span> : <></>}{attendance.present}<span className="text-2xl"> 人</span></span>
+            <span>
+              {attendance.present != attendance.total ? (
+                <span className="text-2xl text-red-400">
+                  (-{attendance.total - attendance.present}){" "}
+                </span>
+              ) : (
+                <></>
+              )}
+              {attendance.present}
+              <span className="text-2xl"> 人</span>
+            </span>
             {attendance.absentSeatNumbers ? (
               <>
-              <span className="text-2xl opacity-75 mt-2">缺席座號</span>
-              <span>{attendance.absentSeatNumbers.replaceAll(",",", ")}</span>
+                <span className="text-2xl opacity-75 mt-2">缺席座號</span>
+                <span>
+                  {attendance.absentSeatNumbers.replaceAll(",", ", ")}
+                </span>
               </>
             ) : (
               <>全到，無缺考</>
@@ -391,14 +408,20 @@ const Home: FC = () => {
             className="flex flex-row transition-all my-auto bg-blue-500 text-white px-6 py-3 rounded text-2xl font-medium hover:bg-blue-600 active:scale-95"
             onClick={() => handleEditClick()}
           >
-            <FontAwesomeIcon icon={faPenToSquare} className={"sm:mr-1 sm:my-auto"} />
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              className={"sm:mr-1 sm:my-auto"}
+            />
             <p className={"max-sm:hidden"}>編輯考程與人數</p>
           </button>
           <button
             className="flex flex-row transition-all my-auto ml-3 sm:ml-8 bg-green-500 text-white px-6 py-3 rounded text-2xl font-medium hover:bg-green-600 active:scale-95"
             onClick={() => handleImportClick()}
           >
-            <FontAwesomeIcon icon={faFileImport} className={"sm:mr-1 sm:my-auto"} />
+            <FontAwesomeIcon
+              icon={faFileImport}
+              className={"sm:mr-1 sm:my-auto"}
+            />
             <p className={"max-sm:hidden"}>導入考程與人數</p>
           </button>
         </div>
