@@ -185,7 +185,7 @@ const EditDialog: FC<EditDialogProps> = ({
           data.attendanceData.absentSeatNumbers
             .split(",")
             .indexOf(`${number}`) != -1
-            ? "text-white bg-red-500 dark:bg-red-600"
+            ? "text-white bg-red-500 dark:bg-red-600 line-through"
             : "text-black dark:text-white bg-white dark:bg-slate-700"
         } w-full mr-1 mb-1 transition-all inline-flex justify-center rounded-md border dark:border-slate-600 shadow-sm px-4 py-2 text-normal font-semibold active:scale-90 sm:w-auto sm:text-sm`}
         onClick={() =>
